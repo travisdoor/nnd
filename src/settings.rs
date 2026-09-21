@@ -50,7 +50,7 @@ pub struct Settings {
 }
 impl Default for Settings {
     fn default() -> Self { Settings {
-        tab_width: 2,
+        tab_width: 4,
         stop_on_initial_exec: false,
         stop_on_main: false,
         fps: 144.0,
@@ -236,133 +236,143 @@ pub struct Palette {
 }
 impl Default for Palette {
     fn default() -> Self {
-        let black = Color::Rgb(0, 0, 0);
+        let text = Color::Rgb(0x00, 0x00, 0x00);
+        let dim = Color::Rgb(0x60, 0x60, 0x60);
+        let dimmer = Color::Rgb(0x90, 0x90, 0x90);
+        let red = Color::Rgb(0xcc, 0x00, 0x00);
+        let green = Color::Rgb(0x00, 0x74, 0x00);
+        let bright_green = Color::Rgb(0x00, 0x84, 0x2c);
+        let dim_green = Color::Rgb(0x2e, 0x7c, 0x2e);
+        let blue = Color::Rgb(0x00, 0x54, 0xdf);
+        let orange = Color::Rgb(0xb0, 0x60, 0x00);
+        let cyan = Color::Rgb(0x00, 0x60, 0x60);
+        let dim_cyan = Color::Rgb(0x2a, 0x78, 0x78);
+        let magenta = Color::Rgb(0x90, 0x00, 0x90);
         let white = Color::Rgb(0xff, 0xff, 0xff);
-        let red = Color::Rgb(255, 50, 50);
-        let green = Color::Rgb(0, 0xaa, 0);
-        let blue = Color::Rgb(0x63, 0x84, 0xff);
-        let yellow = Color::Rgb(0xaa, 0x55, 0);
-        let cyan = Color::Rgb(0, 0xaa, 0xaa);
-        let magenta = Color::Rgb(0xaa, 0, 0xaa);
-        let dark_gray = Color::Rgb(0x55, 0x55, 0x55);
-        let light_green = Color::Rgb(0x55, 0xff, 0x55);
-        let light_blue = Color::Rgb(0x55, 0x55, 0xff);
+
+        let panel = Color::Rgb(0xe4, 0xe4, 0xe4); // tabs, window titles, progress bar
+        let statement_bg = Color::Rgb(0xd8, 0xd8, 0xd8);
+        let green_bg = Color::Rgb(0x9a, 0xe6, 0x9a);
+        let light_blue_bg = Color::Rgb(0xa8, 0xc0, 0xff);
+        let dark_blue_bg = Color::Rgb(0x30, 0x5c, 0xd0); // with white text
+        let amber_bg = Color::Rgb(0xff, 0xd0, 0x60);
+        let dark_orange_bg = Color::Rgb(0xb0, 0x60, 0x00); // with white text
+        let lavender_bg = Color::Rgb(0xc8, 0xd0, 0xff);
 
         Self {
-            default: Style {fg: white, ..D!()},
-            default_dim: Style {fg: white.darker(), ..D!()},
+            default: Style {fg: text, ..D!()},
+            default_dim: Style {fg: dim, ..D!()},
             error: Style {fg: red, ..D!()},
-            warning: Style {fg: yellow, ..D!()},
+            warning: Style {fg: orange, ..D!()},
 
             running: Style {fg: blue, ..D!()},
-            suspended: Style {fg: light_green, ..D!()},
+            suspended: Style {fg: bright_green, ..D!()},
 
-            function_name: Style {fg: white, ..D!()},
+            function_name: Style {fg: text, ..D!()},
             filename: Style {fg: cyan, ..D!()},
             line_number: Style {fg: green, ..D!()},
-            column_number: Style {fg: green.darker(), ..D!()},
-            type_name: Style {fg: white, ..D!()},
+            column_number: Style {fg: dim_green, ..D!()},
+            type_name: Style {fg: text, ..D!()},
             field_name: Style {fg: green, ..D!()},
-            keyword: Style {fg: white, ..D!()},
+            keyword: Style {fg: text, ..D!()},
             hotkey: StyleAdjustment {add_modifier: Modifier::UNDERLINED, ..D!()},
 
-            state_running: Style {bg: blue, fg: black, ..D!()},
-            state_suspended: Style {bg: light_green, fg: black, ..D!()},
-            state_other: Style {bg: yellow, fg: black, ..D!()},
+            state_running: Style {bg: light_blue_bg, fg: text, ..D!()},
+            state_suspended: Style {bg: green_bg, fg: text, ..D!()},
+            state_other: Style {bg: amber_bg, fg: text, ..D!()},
 
-            hint_global: Style {fg: white.darker(), ..D!()},
-            hint_state_dependent: Style {fg: Color::Rgb(120, 80, 120), ..D!()},
-            hint_window_dependent: Style {fg: Color::Rgb(80, 120, 80), ..D!()},
+            hint_global: Style {fg: dim, ..D!()},
+            hint_state_dependent: Style {fg: Color::Rgb(0x8a, 0x50, 0x8a), ..D!()},
+            hint_window_dependent: Style {fg: Color::Rgb(0x40, 0x80, 0x40), ..D!()},
 
-            selected: StyleAdjustment {add_fg: (50, 50, 50), add_bg: (50, 50, 50), ..D!()},
-            hovered: StyleAdjustment {add_fg: (20, 20, 20), add_bg: (25, 25, 25), ..D!()},
-            ip_line: StyleAdjustment {add_fg: (5, 50, 5), add_bg: (5, 50, 5), ..D!()},
+            selected: StyleAdjustment {add_bg: (-40, -40, -40), ..D!()},
+            hovered: StyleAdjustment {add_bg: (-20, -20, -20), ..D!()},
+            ip_line: StyleAdjustment {add_bg: (-40, 0, -40), ..D!()},
 
-            table_header: Style {fg: white.darker(), ..D!()},
-            //striped_table: StyleAdjustment {add_fg: (0, 0, 0), add_bg: (20, 20, 20), ..D!()},
+            table_header: Style {fg: dim, ..D!()},
             striped_table: StyleAdjustment::default(),
 
-            tab_selected: Style {fg: white, bg: Color::Rgb(40, 40, 40), modifier: Modifier::BOLD, ..D!()},
-            tab_ephemeral: ("∗".to_string(), Style {fg: white, ..D!()}),
-            tab_deselected: Style {fg: white.darker(), ..D!()},
-            tab_separator: (" | ".to_string(), Style {fg: white.darker(), ..D!()}),
-            tab_drop_indicator: (">>|<<".to_string(), Style {fg: white, ..D!()}),
+            tab_selected: Style {fg: text, bg: panel, modifier: Modifier::BOLD, ..D!()},
+            tab_ephemeral: ("∗".to_string(), Style {fg: text, ..D!()}),
+            tab_deselected: Style {fg: dim, ..D!()},
+            tab_separator: (" | ".to_string(), Style {fg: dim, ..D!()}),
+            tab_drop_indicator: (">>|<<".to_string(), Style {fg: text, ..D!()}),
 
-            placeholder_fill: Some(('.', Style {fg: white.darker(), bg: black, ..D!()})),
-            truncation_indicator: (("…".to_string(), "…".to_string(), Style {fg: white.darker(), ..D!()})),
-            hscroll_indicator: (("❮".to_string(), "❯".to_string(), Style {fg: white.darker(), ..D!()})),
-            line_wrap_indicator: ("↳".to_string(), "↵".to_string(), Style {fg: white.darker(), ..D!()}),
+            placeholder_fill: Some(('.', Style {fg: dimmer, bg: white, ..D!()})),
+            truncation_indicator: (("…".to_string(), "…".to_string(), Style {fg: dim, ..D!()})),
+            hscroll_indicator: (("❮".to_string(), "❯".to_string(), Style {fg: dim, ..D!()})),
+            line_wrap_indicator: ("↳".to_string(), "↵".to_string(), Style {fg: dim, ..D!()}),
 
-            progress_bar: Style {fg: blue, bg: Color::Rgb(30, 30, 30), ..D!()},
-            scroll_bar_background: Style {fg: white.darker(), ..D!()},
-            scroll_bar_slider: Style {fg: white.darker(), ..D!()},
+            progress_bar: Style {fg: blue, bg: panel, ..D!()},
+            scroll_bar_background: Style {fg: dim, ..D!()},
+            scroll_bar_slider: Style {fg: dim, ..D!()},
 
-            tooltip: StyleAdjustment {add_bg: (30, 40, 50), ..D!()},
-            dialog: StyleAdjustment {add_fg: (10, 10, 10), add_bg: (20, 20, 20), ..D!()},
+            tooltip: StyleAdjustment {add_bg: (-20, -15, -5), ..D!()},
+            dialog: StyleAdjustment {add_bg: (-15, -15, -15), ..D!()},
 
-            text_input: Style {fg: white, ..D!()},
-            text_input_selected: Style {fg: white, bg: blue, ..D!()},
+            text_input: Style {fg: text, ..D!()},
+            text_input_selected: Style {fg: white, bg: dark_blue_bg, ..D!()},
 
-            tree_indent: ("┆".to_string(), Style {fg: white.darker(), ..D!()}),
-            tree_indent_selected: ("┇".to_string(), Style {fg: white, ..D!()}),
-            tree_indent_limit_reached: ("┼".to_string(), Style {fg: white, ..D!()}),
+            tree_indent: ("┆".to_string(), Style {fg: dimmer, ..D!()}),
+            tree_indent_selected: ("┇".to_string(), Style {fg: text, ..D!()}),
+            tree_indent_limit_reached: ("┼".to_string(), Style {fg: text, ..D!()}),
 
-            window_border: Style {fg: white.darker(), ..D!()},
-            window_border_active: Style {fg: white, modifier: Modifier::BOLD, ..D!()},
-            window_border_captured: Style {fg: white, bg: blue.darker(), modifier: Modifier::BOLD, ..D!()},
-            window_border_super_captured: Style {fg: white, bg: yellow, modifier: Modifier::BOLD, ..D!()},
-            window_title_active: Style {fg: white, bg: Color::Rgb(30, 30, 30), modifier: Modifier::BOLD, ..D!()},
-            window_title_selected: Style {fg: white, bg: Color::Rgb(30, 30, 30), ..D!()},
-            window_title_deselected: Style {fg: white.darker(), ..D!()},
-            window_title_separator: (" | ".to_string(), Style {fg: white.darker(), ..D!()}),
+            window_border: Style {fg: dim, ..D!()},
+            window_border_active: Style {fg: text, modifier: Modifier::BOLD, ..D!()},
+            window_border_captured: Style {fg: white, bg: dark_blue_bg, modifier: Modifier::BOLD, ..D!()},
+            window_border_super_captured: Style {fg: white, bg: dark_orange_bg, modifier: Modifier::BOLD, ..D!()},
+            window_title_active: Style {fg: text, bg: panel, modifier: Modifier::BOLD, ..D!()},
+            window_title_selected: Style {fg: text, bg: panel, ..D!()},
+            window_title_deselected: Style {fg: dim, ..D!()},
+            window_title_separator: (" | ".to_string(), Style {fg: dim, ..D!()}),
 
-            value: Style {fg: white, ..D!()},
-            value_misc: Style {fg: white.darker(), ..D!()},
-            value_dubious: StyleAdjustment {add_fg: (-60, -60, -60), ..D!()},
+            value: Style {fg: text, ..D!()},
+            value_misc: Style {fg: dim, ..D!()},
+            value_dubious: StyleAdjustment {add_fg: (90, 90, 90), ..D!()}, // fade text towards the light background
 
-            code_statement: Style {fg: white, bg: dark_gray, ..D!()},
-            code_inlined_site: Style {fg: white, bg: light_blue, ..D!()},
-            code_keyword: Style {fg: Color::Rgb(0xff, 0x80, 0xd0), modifier: Modifier::BOLD, ..D!()},
-            code_type: Style {fg: Color::Rgb(0x7a, 0xd7, 0xff), ..D!()},
-            code_function: Style {fg: Color::Rgb(0x55, 0xff, 0xaa), ..D!()},
-            code_string: Style {fg: Color::Rgb(0xff, 0xd7, 0x5f), ..D!()},
-            code_escape: Style {fg: Color::Rgb(0xff, 0xaa, 0x55), modifier: Modifier::BOLD, ..D!()},
+            code_statement: Style {fg: text, bg: statement_bg, ..D!()},
+            code_inlined_site: Style {fg: text, bg: lavender_bg, ..D!()},
+            code_keyword: Style {fg: Color::Rgb(0xb0, 0x00, 0x80), modifier: Modifier::BOLD, ..D!()},
+            code_type: Style {fg: Color::Rgb(0x00, 0x66, 0x88), ..D!()},
+            code_function: Style {fg: Color::Rgb(0x00, 0x6b, 0x4b), ..D!()},
+            code_string: Style {fg: Color::Rgb(0x86, 0x66, 0x00), ..D!()},
+            code_escape: Style {fg: Color::Rgb(0x99, 0x4d, 0x00), modifier: Modifier::BOLD, ..D!()},
             code_number: Style {fg: cyan, ..D!()},
-            code_comment: Style {fg: Color::Rgb(0x88, 0x88, 0x88), ..D!()},
-            code_constant: Style {fg: Color::Rgb(0xff, 0xaa, 0x55), ..D!()},
-            code_variable: Style {fg: white, ..D!()},
-            code_parameter: Style {fg: light_green, ..D!()},
+            code_comment: Style {fg: Color::Rgb(0x80, 0x80, 0x80), ..D!()},
+            code_constant: Style {fg: Color::Rgb(0xb3, 0x5c, 0x00), ..D!()},
+            code_variable: Style {fg: text, ..D!()},
+            code_parameter: Style {fg: Color::Rgb(0x3b, 0x80, 0x00), ..D!()},
             code_property: Style {fg: green, ..D!()},
             code_module: Style {fg: cyan, ..D!()},
-            code_attribute: Style {fg: Color::Rgb(0xdd, 0xaa, 0xff), ..D!()},
-            code_operator: Style {fg: Color::Rgb(0xff, 0x80, 0xd0), ..D!()},
-            code_punctuation: Style {fg: white.darker(), ..D!()},
-            code_instruction_pointer_column: StyleAdjustment {add_bg: (0, 100, 0), add_fg: (-600, -600, -600), add_modifier: Modifier::UNDERLINED, ..D!()},
-            search_result: StyleAdjustment {add_bg: (100, 100, 0), add_fg: (100, 100, 100), ..D!()},
+            code_attribute: Style {fg: Color::Rgb(0x80, 0x38, 0xb8), ..D!()},
+            code_operator: Style {fg: Color::Rgb(0xb0, 0x00, 0x80), ..D!()},
+            code_punctuation: Style {fg: dim, ..D!()},
+            code_instruction_pointer_column: StyleAdjustment {add_bg: (-100, 0, -100), add_fg: (-600, -600, -600), add_modifier: Modifier::UNDERLINED, ..D!()},
+            search_result: StyleAdjustment {add_bg: (0, 0, -140), ..D!()},
             instruction_pointer: Style {fg: green, modifier: Modifier::BOLD, ..D!()},
             additional_instruction_pointer: Style {fg: blue, ..D!()},
             breakpoint: Style {fg: red, ..D!()},
             secondary_breakpoint: Style {fg: blue, ..D!()},
-            code_line_number: Style {fg: white, ..D!()},
+            code_line_number: Style {fg: text, ..D!()},
             url: Style {fg: blue, ..D!()},
-            disas_default: Style {fg: white, ..D!()},
-            disas_keyword: Style {fg: white.darker(), ..D!()},
+            disas_default: Style {fg: text, ..D!()},
+            disas_keyword: Style {fg: dim, ..D!()},
             disas_mnemonic: Style {fg: green, modifier: Modifier::BOLD, ..D!()},
             disas_register: Style {fg: blue, ..D!()},
             disas_number: Style {fg: cyan, ..D!()},
             disas_function: Style {fg: magenta, ..D!()},
-            disas_jump_arrow: Style {fg: white, ..D!()},
-            disas_relative_address: Style {fg: cyan.darker(), ..D!()}, 
-            disas_filename: Style {fg: cyan.darker(), ..D!()},
-            disas_address_statement: Style {fg: white.darker(), ..D!()},
-            disas_address_not_statement: Style {fg: white.darker().darker(), ..D!()},
+            disas_jump_arrow: Style {fg: text, ..D!()},
+            disas_relative_address: Style {fg: dim_cyan, ..D!()},
+            disas_filename: Style {fg: dim_cyan, ..D!()},
+            disas_address_statement: Style {fg: dim, ..D!()},
+            disas_address_not_statement: Style {fg: dimmer, ..D!()},
 
-            thread_breakpoint_hit: StyleAdjustment {add_fg: (100, 100, 100), add_bg: (10, 100, 10), ..D!()},
-            thread_crash: StyleAdjustment {add_fg: (100, 100, 100), add_bg: (150, 50, 50), ..D!()},
-            breakpoint_error: StyleAdjustment {add_fg: (100, 100, 100), add_bg: (150, 50, 50), ..D!()},
-            breakpoint_builtin: StyleAdjustment {add_fg: (10, 10, 10), add_bg: (30, 30, 30), ..D!()},
+            thread_breakpoint_hit: StyleAdjustment {add_bg: (-90, 0, -90), ..D!()},
+            thread_crash: StyleAdjustment {add_bg: (0, -100, -100), ..D!()},
+            breakpoint_error: StyleAdjustment {add_bg: (0, -100, -100), ..D!()},
+            breakpoint_builtin: StyleAdjustment {add_bg: (-30, -30, -30), ..D!()},
 
-            button: Style {fg: white, bg: dark_gray.darker().darker(), ..D!()},
+            button: Style {fg: text, bg: statement_bg, ..D!()},
        }
     }
 }

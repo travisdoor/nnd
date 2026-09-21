@@ -156,7 +156,7 @@ fn make_config(
 fn config_for_path(path: &Path) -> Option<&'static HighlightConfiguration> {
     let ext = path.extension()?.to_str()?.to_ascii_lowercase();
     match ext.as_str() {
-        "rs" => RUST_CONFIG.as_ref(),
+        "rs" | "bl" => RUST_CONFIG.as_ref(),
         "c" => C_CONFIG.as_ref(),
         "cc" | "cpp" | "cxx" | "c++" | "h" | "hh" | "hpp" | "hxx" | "h++" => CPP_CONFIG.as_ref(),
         "zig" => ZIG_CONFIG.as_ref(),

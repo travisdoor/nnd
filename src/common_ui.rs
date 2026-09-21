@@ -62,7 +62,8 @@ pub enum Color {
     Palette8Bright(u8), // ESC[(90-97|100-107)m
     TerminalDefault,    // ESC[(39|49)m
 }
-impl Default for Color { fn default() -> Self { Self::Rgb(0, 0, 0) } }
+//impl Default for Color { fn default() -> Self { Self::Rgb(0, 0, 0) } }
+impl Default for Color { fn default() -> Self { Self::Rgb(255, 255, 255) } }
 impl Color {
     pub fn white() -> Self { Self::Rgb(255, 255, 255) }
     pub fn black() -> Self { Self::Rgb(0, 0, 0) }

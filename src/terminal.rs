@@ -152,7 +152,9 @@ const SCREEN_ALTERNATE: &'static str = "\x1B[?1049h";
 const SCREEN_MAIN: &'static str = "\x1B[?1049l";
 const CLEAR_SCREEN: &'static str = "\x1B[2J";
 const STYLE_RESET: &'static str = "\x1B[m";
-const STYLE_RESET_TO_BLACK: &'static str = "\x1B[0;38;2;0;0;0;48;2;0;0;0m";
+//const STYLE_RESET_TO_BLACK: &'static str = "\x1B[0;38;2;0;0;0;48;2;0;0;0m";
+const STYLE_RESET_TO_BLACK: &'static str = "\x1B[0;38;2;255;255;255;48;2;255;255;255m";
+
 // Mouse parameters we use:
 //  1002 - SET_BTN_EVENT_MOUSE - report mouse button presses/releases and mouse movement when any button is held (only if the cursor moved to a different cell in the terminal). OR ...
 //  1003 - SET_ANY_EVENT_MOUSE - report all mouse movement (even if the cursor moved by one pixel, even though pixel coordinates are not reported).
